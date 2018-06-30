@@ -1,52 +1,23 @@
-mongodb:
-    image: erangaeb/senzmongodb:0.1
-    container_name: mongodb
-    volumes:
-        ['$MONGO_DATA_DIR:/data/db']
+zookeeper:
+    image: jplock/zookeeper:3.4.11
+    container_name: zookeeper
     ports:
-        - 27017:27017
+        - 2181:2181
 
 
-zwitch:
-    image: erangaeb/zwitch:2.8
-    container_name: zwitch
-    ports:
-        - 7171:7171
+kafka:
+    image: ches/kafka:0.10.2.1
+    container_name: kafka
     environment:
-        - MONGO_HOST=${MONGO_HOST}
-        - SWITCH_MODE=${SWITCH_MODE}
-        - CHAINZ_NAME=${CHAINZ_NAME}
-        - PROMIZE_API=${PROMIZE_API}
-        - UZER_API=${UZER_API}
-        - FCM_ANDROID_API=${FCM_API}
-        - FCM_SERVER_KEY=${FCM_SERVER_KEY}
-        - APN_API=${APN_API}
-        - APN_TOPIC=${APN_TOPIC}
-        - HTTP_PROXY=${HTTP_PROXY}
-    volumes:
-        ['$SWITCH_LOGS_DIR:/app/logs', '$SWITCH_KEYS_DIR:/app/.keys', '$ZWITCH_CERTS_DIR:/app/.certs']
-    links:
-        - mongodb
-
-
-cassandra:
-    image: erangaeb/cassandra:0.6
-    container_name: cassandra
-    environment:
-        - CASSANDRA_BROADCAST_ADDRESS=${CASSANDRA_BROADCAST_ADDRESS}
-        - CASSANDRA_SEEDS=${CASSANDRA_SEEDS}
-    volumes:
-        ['$CASSANDRA_DATA_DIR:/opt/cassandra/data']
+        - KAFKA_ADVERTISED_HOST_NAME=${KAFKA_ZHOST}
+        - ZOOKEEPER_IP=${KAFKA_ZHOST}
     ports:
-        - 7000:7000
-        - 7001:7001
-        - 7199:7199
-        - 9042:9042
-        - 9160:9160
+        - 7203:7203
+        - 9092:9092
 
 
 elassandra:
-    image: erangaeb/elassandra:2.0
+    image: erangaeb/elassandra:3.0
     container_name: elassandra
     environment:
         - CASSANDRA_BROADCAST_ADDRESS=${CASSANDRA_BROADCAST_ADDRESS}
@@ -63,38 +34,68 @@ elassandra:
         - 9300:9300
 
 
+restz:
+    image: erangaeb/3drestz:0.1
+    container_name: restz
+    environment:
+        - SENZIE_NAME=${RESTZ_NAME}
+        - KAFKA_KHOST=${KAFKA_KHOST}
+        - KAFKA_KPORT=${KAFKA_KPORT}
+        - KAFKA_ZHOST=${KAFKA_ZHOST}
+        - KAFKA_ZPORT=${KAFKA_ZPORT}
+    volumes:
+        ['$RESTZ_LOGS_DIR:/app/logs', '$RESTZ_KEYS_DIR:/app/.keys']
+    ports:
+        - 7070:7070
+
+
 chainz:
-    image: erangaeb/chainz:1.2
+    image: erangaeb/3dchainz:0.1
     container_name: chainz
     environment:
         - SENZIE_NAME=${CHAINZ_NAME}
         - CASSANDRA_HOST=${CASSANDRA_HOST}
         - CASSANDRA_PORT=${CASSANDRA_PORT}
         - CASSANDRA_KEYSPACE=${CASSANDRA_KEYSPACE}
-        - SWITCH_HOST=${SWITCH_HOST}
-        - SWITCH_PORT=${SWITCH_PORT}
-        - TRANS_API=${TRANS_API}
-        - TRANS_ACTION=${TRANS_ACTION}
-        - TRANS_ACCOUNT=${TRANS_ACCOUNT}
+        - KAFKA_KHOST=${KAFKA_KHOST}
+        - KAFKA_KPORT=${KAFKA_KPORT}
+        - KAFKA_ZHOST=${KAFKA_ZHOST}
+        - KAFKA_ZPORT=${KAFKA_ZPORT}
     volumes:
         ['$CHAINZ_LOGS_DIR:/app/logs', '$CHAINZ_KEYS_DIR:/app/.keys']
-    ports:
-        - 5005:5005
-        - 7070:7070
 
 
-cminer:
-    image: erangaeb/cminer:0.9
-    container_name: cminer
+orderz:
+    image: erangaeb/3dorderz:0.1
+    container_name: orderz
     environment:
-        - SENZIE_NAME=${CMINER_NAME}
+        - SENZIE_NAME=${ORDERZ_NAME}
         - CASSANDRA_HOST=${CASSANDRA_HOST}
         - CASSANDRA_PORT=${CASSANDRA_PORT}
         - CASSANDRA_KEYSPACE=${CASSANDRA_KEYSPACE}
-        - SWITCH_HOST=${SWITCH_HOST}
-        - SWITCH_PORT=${SWITCH_PORT}
+        - KAFKA_KHOST=${KAFKA_KHOST}
+        - KAFKA_KPORT=${KAFKA_KPORT}
+        - KAFKA_ZHOST=${KAFKA_ZHOST}
+        - KAFKA_ZPORT=${KAFKA_ZPORT}
     volumes:
-        ['$CMINER_LOGS_DIR:/app/logs', '$CMINER_KEYS_DIR:/app/.keys']
+        ['$ORDERZ_LOGS_DIR:/app/logs', '$ORDERZ_KEYS_DIR:/app/.keys']
+
+
+minerz:
+    image: erangaeb/3dminerz:0.1
+    container_name: minerz
+    environment:
+        - SENZIE_NAME=${MINERZ_NAME}
+        - CASSANDRA_HOST=${CASSANDRA_HOST}
+        - CASSANDRA_PORT=${CASSANDRA_PORT}
+        - CASSANDRA_KEYSPACE=${CASSANDRA_KEYSPACE}
+        - ELASTIC_CLUSTER=${ELASTIC_CLUSTER}
+        - ELASTIC_HOST=${ELASTIC_HOST}
+        - ELASTIC_PORT=${ELASTIC_PORT}
+        - KAFKA_HOST=${KAFKA_HOST}
+        - KAFKA_PORT=${KAFKA_PORT}
+    volumes:
+        ['$MINERZ_LOGS_DIR:/app/logs', '$MINERZ_KEYS_DIR:/app/.keys']
 
 
 webz:
@@ -106,15 +107,3 @@ webz:
         - CASSANDRA_KEYSPACE=${CASSANDRA_KEYSPACE}
     ports:
         - 81:8082
-
-
-nginx:
-    image: erangaeb/senznginx:1.0
-    container_name: nginx
-    ports:
-        - 80:80
-        - 8443:8443
-    volumes:
-        ['$NGINX_CERTS_DIR:/etc/nginx/certs']
-    links:
-        - chainz
