@@ -49,11 +49,11 @@ elassandra:
         - 7070:7070
 
 
-3chain:
+oemchain:
     image: erangaeb/3chain:0.1
-    container_name: 3chain
+    container_name: oemchain
     environment:
-        - SENZIE_NAME=${CHAIN_NAME}
+        - SENZIE_NAME=${OEMCHAIN_NAME}
         - CASSANDRA_HOST=${CASSANDRA_HOST}
         - CASSANDRA_PORT=${CASSANDRA_PORT}
         - CASSANDRA_KEYSPACE=${CASSANDRA_KEYSPACE}
@@ -61,8 +61,28 @@ elassandra:
         - KAFKA_KPORT=${KAFKA_KPORT}
         - KAFKA_ZHOST=${KAFKA_ZHOST}
         - KAFKA_ZPORT=${KAFKA_ZPORT}
+        - KAFKA_TOPIC=${OEMCHAIN_KAFKA_TOPIC}
+        - KAFKA_CGROUP=${OEMCHAIN_KAFKA_CGROUP}
     volumes:
-        ['$CHAIN_LOGS_DIR:/app/logs', '$CHAIN_KEYS_DIR:/app/.keys']
+        ['$OEMCHAIN_LOGS_DIR:/app/logs', '$OEMCHAIN_KEYS_DIR:/app/.keys']
+
+
+amcchain:
+    image: erangaeb/3chain:0.1
+    container_name: amcchain
+    environment:
+        - SENZIE_NAME=${AMCCHAIN_NAME}
+        - CASSANDRA_HOST=${CASSANDRA_HOST}
+        - CASSANDRA_PORT=${CASSANDRA_PORT}
+        - CASSANDRA_KEYSPACE=${CASSANDRA_KEYSPACE}
+        - KAFKA_KHOST=${KAFKA_KHOST}
+        - KAFKA_KPORT=${KAFKA_KPORT}
+        - KAFKA_ZHOST=${KAFKA_ZHOST}
+        - KAFKA_ZPORT=${KAFKA_ZPORT}
+        - KAFKA_TOPIC=${AMCCHAIN_KAFKA_TOPIC}
+        - KAFKA_CGROUP=${AMCCHAIN_KAFKA_CGROUP}
+    volumes:
+        ['$AMCCHAIN_LOGS_DIR:/app/logs', '$AMCCHAIN_KEYS_DIR:/app/.keys']
 
 
 3ops:
