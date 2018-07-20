@@ -34,26 +34,26 @@ elassandra:
         - 9300:9300
 
 
-restz:
-    image: erangaeb/3drestz:0.1
-    container_name: restz
+3rest:
+    image: erangaeb/3rest:0.1
+    container_name: 3rest
     environment:
-        - SENZIE_NAME=${RESTZ_NAME}
+        - SENZIE_NAME=${REST_NAME}
         - KAFKA_KHOST=${KAFKA_KHOST}
         - KAFKA_KPORT=${KAFKA_KPORT}
         - KAFKA_ZHOST=${KAFKA_ZHOST}
         - KAFKA_ZPORT=${KAFKA_ZPORT}
     volumes:
-        ['$RESTZ_LOGS_DIR:/app/logs', '$RESTZ_KEYS_DIR:/app/.keys']
+        ['$REST_LOGS_DIR:/app/logs', '$REST_KEYS_DIR:/app/.keys']
     ports:
         - 7070:7070
 
 
-chainz:
-    image: erangaeb/3dchainz:0.1
-    container_name: chainz
+3chain:
+    image: erangaeb/3chain:0.1
+    container_name: 3chain
     environment:
-        - SENZIE_NAME=${CHAINZ_NAME}
+        - SENZIE_NAME=${CHAIN_NAME}
         - CASSANDRA_HOST=${CASSANDRA_HOST}
         - CASSANDRA_PORT=${CASSANDRA_PORT}
         - CASSANDRA_KEYSPACE=${CASSANDRA_KEYSPACE}
@@ -62,14 +62,14 @@ chainz:
         - KAFKA_ZHOST=${KAFKA_ZHOST}
         - KAFKA_ZPORT=${KAFKA_ZPORT}
     volumes:
-        ['$CHAINZ_LOGS_DIR:/app/logs', '$CHAINZ_KEYS_DIR:/app/.keys']
+        ['$CHAIN_LOGS_DIR:/app/logs', '$CHAIN_KEYS_DIR:/app/.keys']
 
 
-orderz:
-    image: erangaeb/3dorderz:0.1
-    container_name: orderz
+3ops:
+    image: erangaeb/3ops:0.1
+    container_name: 3ops
     environment:
-        - SENZIE_NAME=${ORDERZ_NAME}
+        - SENZIE_NAME=${OPS_NAME}
         - CASSANDRA_HOST=${CASSANDRA_HOST}
         - CASSANDRA_PORT=${CASSANDRA_PORT}
         - CASSANDRA_KEYSPACE=${CASSANDRA_KEYSPACE}
@@ -78,14 +78,14 @@ orderz:
         - KAFKA_ZHOST=${KAFKA_ZHOST}
         - KAFKA_ZPORT=${KAFKA_ZPORT}
     volumes:
-        ['$ORDERZ_LOGS_DIR:/app/logs', '$ORDERZ_KEYS_DIR:/app/.keys']
+        ['$OPS_LOGS_DIR:/app/logs', '$OPS_KEYS_DIR:/app/.keys']
 
 
-minerz:
-    image: erangaeb/3dminerz:0.1
-    container_name: minerz
+3miner:
+    image: erangaeb/3miner:0.1
+    container_name: 3miner
     environment:
-        - SENZIE_NAME=${MINERZ_NAME}
+        - SENZIE_NAME=${MINER_NAME}
         - MINING_INTERVAL=${MINING_INTERVAL}
         - CASSANDRA_HOST=${CASSANDRA_HOST}
         - CASSANDRA_PORT=${CASSANDRA_PORT}
@@ -96,7 +96,7 @@ minerz:
         - KAFKA_HOST=${KAFKA_HOST}
         - KAFKA_PORT=${KAFKA_PORT}
     volumes:
-        ['$MINERZ_LOGS_DIR:/app/logs', '$MINERZ_KEYS_DIR:/app/.keys']
+        ['$MINER_LOGS_DIR:/app/logs', '$MINER_KEYS_DIR:/app/.keys']
 
 
 webz:
