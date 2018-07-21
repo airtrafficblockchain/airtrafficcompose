@@ -119,10 +119,37 @@ amcchain:
         ['$MINER_LOGS_DIR:/app/logs', '$MINER_KEYS_DIR:/app/.keys']
 
 
+dazh:
+    image: supunucsc/kafkaclient:0.1
+    container_name: dazh
+    environment:
+        - KAFKA_HOST=${KAFKA_HOST}
+        - KAFKA_PORT=${KAFKA_PORT}
+        - KAFKA_TOPIC_TRANS=tranz
+        - KAFKA_TOPIC_BLOCKS=blockz
+        - WEBSOCKET_PORT=10000
+    ports:
+        - 10000:10000
+
+
+webm:
+    image: supunucsc/webmiddleware:0.1
+    container_name: webm
+    environment:
+        - ELASTICSEARCH_HOST=${ELASTIC_HOST}
+        - ELASTICSEARCH_PORT=9200
+        - API_PORT=5000
+    ports:
+        - 5000:5000
+
+
 webz:
-    image: supunucsc/blockchainfrontend:0.1
+    image: supunucsc/blockchainfrontend:0.2
     container_name: webz
     environment:
-        - REACT_APP_API_HOST=${ELASTIC_HOST}
+        - REACT_APP_API_PORT=5000
+        - REACT_APP_API_HOST=${WEBM_HOST}
+        - REACT_APP_WEBSOCKET_HOST=${DAZH_HOST}
+        - REACT_APP_WEBSOCKET_PORT=10000
     ports:
         - 3000:3000
