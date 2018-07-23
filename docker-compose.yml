@@ -123,7 +123,7 @@ dazh:
     image: supunucsc/kafkaclient:0.1
     container_name: dazh
     environment:
-        - KAFKA_HOST_IP=${KAFKA_HOST}
+        - KAFKA_HOSTIP=${KAFKA_HOST}
         - KAFKA_PORT=${KAFKA_PORT}
         - KAFKA_TOPIC_TRANS=tranz
         - KAFKA_TOPIC_BLOCKS=blockz
