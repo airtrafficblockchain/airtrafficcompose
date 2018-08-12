@@ -97,6 +97,8 @@ amcchain:
         - KAFKA_KPORT=${KAFKA_KPORT}
         - KAFKA_ZHOST=${KAFKA_ZHOST}
         - KAFKA_ZPORT=${KAFKA_ZPORT}
+        - PR_API=${PR_API}
+        - PO_API=${PO_API}
     volumes:
         ['$OPS_LOGS_DIR:/app/logs', '$OPS_KEYS_DIR:/app/.keys']
 
