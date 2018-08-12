@@ -63,6 +63,8 @@ oemchain:
         - KAFKA_ZPORT=${KAFKA_ZPORT}
         - KAFKA_TOPIC=${OEMCHAIN_KAFKA_TOPIC}
         - KAFKA_CGROUP=${OEMCHAIN_KAFKA_CGROUP}
+        - PO_API=${PO_API}
+        - PRNT_API=${PRNT_API}
     volumes:
         ['$OEMCHAIN_LOGS_DIR:/app/logs', '$OEMCHAIN_KEYS_DIR:/app/.keys']
 
@@ -81,6 +83,8 @@ amcchain:
         - KAFKA_ZPORT=${KAFKA_ZPORT}
         - KAFKA_TOPIC=${AMCCHAIN_KAFKA_TOPIC}
         - KAFKA_CGROUP=${AMCCHAIN_KAFKA_CGROUP}
+        - PO_API=${PO_API}
+        - PRNT_API=${PRNT_API}
     volumes:
         ['$AMCCHAIN_LOGS_DIR:/app/logs', '$AMCCHAIN_KEYS_DIR:/app/.keys']
 
@@ -99,6 +103,7 @@ amcchain:
         - KAFKA_ZPORT=${KAFKA_ZPORT}
         - PR_API=${PR_API}
         - PO_API=${PO_API}
+        - PRNT_API=${PRNT_API}
     volumes:
         ['$OPS_LOGS_DIR:/app/logs', '$OPS_KEYS_DIR:/app/.keys']
 
