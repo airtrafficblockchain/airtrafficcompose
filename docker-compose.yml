@@ -34,9 +34,9 @@ elassandra:
         - 9300:9300
 
 
-3rest:
-    image: erangaeb/3rest:0.1
-    container_name: 3rest
+airtrafficrest:
+    image: supunucsc/airtrafficrest:0.1
+    container_name: airtrafficrest
     environment:
         - SENZIE_NAME=${REST_NAME}
         - KAFKA_KHOST=${KAFKA_KHOST}
